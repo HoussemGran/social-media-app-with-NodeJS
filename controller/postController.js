@@ -26,3 +26,27 @@ exports.showPosts = (req,res)=>{
     });
 
 };
+
+exports.deletePost = (req,res)=>{
+
+    const id = req.params.id;
+    db.query("delete from post where id = ? ",[id],(err,results,fileds)=>{
+
+        res.send(results);
+
+    });
+
+};
+
+// show post of a specefic user
+exports.showPostsByID = (req,res)=>{
+
+    const id = req.params.id;
+    db.query("select * from post p , user u where p.user = u.id and u.id = ?",[id],(err,results,fileds)=>{
+
+        res.send(results);
+
+    });
+
+
+};
