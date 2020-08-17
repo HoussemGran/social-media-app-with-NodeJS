@@ -3,11 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <title>Home</title>
 </head>
 <body>
+    <%- include('navbar') %>
+
+    <div class="container">
+        <div class="row">
+          <div class="col-sm">
+             Groups 
+          </div>
+          <div class="col-sm">
+            
+
+<%  results.forEach(function(post){ %>
     
-hello world
+    <div class="card" style="width: 30rem;margin-top: 40px;">
+        <div class="card-body">
+          <h5 class="card-title"><%= post.title %></h5>
+          <p class="card-text"> <%= post.content %> </p>
+       
+       <a href="up/<%= post.idPost %>"><button type="button" class="btn btn-outline-primary">UP</button></a> 
+       <span class="badge badge-light"> <%= post.up %> </span>
+        </div>
+      </div>
+   <% }) %>
+
+          </div>
+          <div class="col-sm" style="text-align: center;">
+            My Friends
+          </div>
+        </div>
+      </div>
+
 
 </body>
 </html>

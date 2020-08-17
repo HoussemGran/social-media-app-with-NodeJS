@@ -16,21 +16,22 @@ exports.addPost = (req,res)=>{
 
 };
 
-
+// show all post with users
 exports.showPosts = (req,res)=>{
 
-    db.query('select * from post',(err,results,fileds)=>{
+    db.query('select * from post p , user u where p.user = u.id',(err,results,fileds)=>{
 
-        res.send(results);
+        res.render('home',{results:results});
 
     });
 
 };
 
+// remove a specified post
 exports.deletePost = (req,res)=>{
 
     const id = req.params.id;
-    db.query("delete from post where id = ? ",[id],(err,results,fileds)=>{
+    db.query("delete from post where idPost = ? ",[id],(err,results,fileds)=>{
 
         res.send(results);
 
@@ -45,6 +46,19 @@ exports.showPostsByID = (req,res)=>{
     db.query("select * from post p , user u where p.user = u.id and u.id = ?",[id],(err,results,fileds)=>{
 
         res.send(results);
+
+    });
+
+
+};
+
+// increment a post up
+exports.incrementUP = (req,res)=>{
+
+    const id = req.params.id;
+    db.query("update post set up = up+1 where idPost=?",[id],(err,results,fileds)=>{
+
+        if(!err) res.redirect('/');
 
     });
 
