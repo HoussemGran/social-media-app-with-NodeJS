@@ -13,18 +13,23 @@
     db.query("insert into mygroup set ? ",group,(err,results,fields)=>{
 
         if(err) res.send(err.message);
+        else{
+
+         
+            
+    db.query("insert into usersGroups set ?",{idUser:group.admin , idGroup:group.id},(err,results,fields)=>{
+
+        if(err) res.send(err.message);
         else res.send(results);
+
+
+    }); 
+
+        }
       });
       
       
-
-    db.query("insert into usersGroups set ?",{idUser:group.admin , idGroup:group.id},(err,results,fields)=>{
-
-        if(err) console.log(err.message);
-        else console.log(results);
-
-
-    });  
+ 
 
     };
 
@@ -32,7 +37,7 @@
     // show all groups
     exports.showGroups = (req,res)=>{
 
-        db.query("select * from groups g , user u where g.admin = u.id",(err,results,fields)=>{
+        db.query("select * from mygroup g , user u where g.admin = u.id",(err,results,fields)=>{
             res.send(results);
         });
 
@@ -43,7 +48,7 @@
 
         const id = req.params.id;
 
-        db.query("select * from groups g , user u where g.admin = u.id and g.id = ?",[id],(err,results,fields)=>{
+        db.query("select * from mygroup g , user u where g.admin = u.id and g.id = ?",[id],(err,results,fields)=>{
 
             if(!err) res.send(results);
         });
@@ -56,7 +61,7 @@
 
         const id = req.params.id;
 
-        db.query("delete from groups where id = ?",[id],(err,results,fields)=>{
+        db.query("delete from mygroup where id = ?",[id],(err,results,fields)=>{
 
             res.redirect("home");
 
@@ -71,7 +76,7 @@
         const id = req.params.id;
         const name = req.body.name;
 
-        db.query("update groups set name = ? where id = ?",[name,id],(err,results,fields)=>{
+        db.query("update mygroup set name = ? where id = ?",[name,id],(err,results,fields)=>{
 
             if(!err) res.redirect('home');
             else res.send(err.message);
