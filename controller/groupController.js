@@ -38,7 +38,8 @@
     exports.showGroups = (req,res)=>{
 
         db.query("select * from mygroup g , user u where g.admin = u.id",(err,results,fields)=>{
-            res.send(results);
+            console.log(results);
+            res.render('groups',{results:results});
         });
 
     };

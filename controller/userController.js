@@ -12,7 +12,7 @@ exports.addUser = (req,res)=>{
 
     db.query("select * from user where username = ? and password = ?",[username,password],(err,results,fields)=>{
 
-        console.log(results.length);
+       
 
         if(results.length>0){
             res.send("welcome "+results[0].username);
@@ -23,7 +23,7 @@ exports.addUser = (req,res)=>{
 
             db.query('insert into user set ?',user,(err,results,fields)=>{
 
-               if(!err) res.send("user inserted");
+               if(!err) res.send(results);
                 else res.send(err.message);
         
             });
@@ -37,6 +37,7 @@ exports.addUser = (req,res)=>{
   
 };
 
+// show all users
 exports.showUsers = (req,res)=>{
 
     db.query('select * from user',(err,results,fields)=>{
@@ -46,6 +47,23 @@ exports.showUsers = (req,res)=>{
     });
 
 };
+
+// show a specified user profile
+exports.showUser = (req,res)=>{
+
+    const id = req.params.id;
+    db.query("select * from user u , post p where p.user = u.id and u.id = ?",[id],(err,results,fields)=>{
+        console.log(results);
+        if(err) res.send(err.message);
+        else if(results.length > 0)
+         res.render("profile",{results:results , msg:null});
+        else res.render("profile",{results : null , msg:"No posts Yet"});
+
+    });
+
+
+};
+
 
 
 // show my friends

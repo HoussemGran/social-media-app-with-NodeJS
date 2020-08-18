@@ -4,15 +4,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
-    <title>Home</title>
+  
+    <title>Profile</title>
 </head>
 <body>
+
+  
     <%- include('navbar') %>
 
+    <% if(msg) { %>
+
+        <div class="alert alert-warning" style="text-align: center;" role="alert">
+            <%=  msg %>
+          </div>
+
+    <% }  else { %>
+        
+        
+        
+ 
     <div class="container">
         <div class="row">
           <div class="col-sm">
               
+            <%=   %>
            
           </div>
           <div class="col-sm">
@@ -22,6 +37,7 @@
     
     <div class="card" style="width: 30rem;margin-top: 40px;">
         <div class="card-body">
+            <h3 class="card-title"> <%= post.username %> </h3>
           <h5 class="card-title"><%= post.title %></h5>
           <p class="card-text"> <%= post.content %> </p>
        
@@ -33,10 +49,12 @@
 
           </div>
           <div class="col-sm" style="text-align: center;">
-            My Friends
+            
           </div>
         </div>
       </div>
+ 
+    <% } %>
 
 
 </body>
