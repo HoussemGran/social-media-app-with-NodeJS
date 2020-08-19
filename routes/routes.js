@@ -9,6 +9,7 @@ const groupController = require('../controller/groupController');
 router.post('/user',userController.addUser);
 router.get('/users',userController.showUsers);
 router.get('/profile/:id',userController.showUser);
+router.get('/myprofile',userController.myProfile);
 
 // posts controller
 router.post('/post',postController.addPost);

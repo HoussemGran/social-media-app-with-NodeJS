@@ -36,24 +36,26 @@
 
     // show all groups
     exports.showGroups = (req,res)=>{
-
+        const user = req.session.username;
+        if(user){
         db.query("select * from mygroup g , user u where g.admin = u.id",(err,results,fields)=>{
             console.log(results);
             res.render('groups',{results:results});
         });
-
+        }else res.redirect('login');
     };
 
     // show a specified group
     exports.showGroup = (req,res)=>{
-
+        const user = req.session.username;
+    if(user){
         const id = req.params.id;
 
         db.query("select * from mygroup g , user u where g.admin = u.id and g.id = ?",[id],(err,results,fields)=>{
 
             if(!err) res.send(results);
         });
-
+        }else res.redirect('login');
     };
 
 
@@ -67,7 +69,6 @@
             res.redirect("home");
 
         });
-
 
     };
 

@@ -1,16 +1,22 @@
 
 const uuid = require('uuid');
 const db = require('../db');
+const date = require('date-and-time');
 
 
 exports.addPost = (req,res)=>{
+    
+    const now = new Date();
+    const datepost = date.format(now, 'YYYY/MM/DD HH:mm:ss');
 
-    const post = {id:uuid.v4() , title:req.body.title , content:req.body.content , user:req.body.user};
+    const post = {idPost:uuid.v4() , title:req.body.title , content:req.body.content , user:req.session.userID,
+    datePost : datepost};
 
     db.query('insert into post set ?',post,(err,results,fileds)=>{
 
-        res.send(results);
-
+        if(err) res.send(err);
+        else
+        res.redirect("home");
 
     });
 
@@ -19,12 +25,17 @@ exports.addPost = (req,res)=>{
 // show all post with users
 exports.showPosts = (req,res)=>{
 
-    db.query('select * from post p , user u where p.user = u.id',(err,results,fileds)=>{
+    const hunter = req.session;
+    if(hunter.username){
 
-        res.render('home',{results:results});
+    db.query('select * from post p , user u where p.user = u.id',(err,results,fileds)=>{
+        if(results.legth > 0)
+        res.render('home',{results:results,msg:null});
+        else res.render('home',{results:null,msg:"No Posts Yet"});
 
     });
 
+    }else res.redirect('login');
 };
 
 // remove a specified post
@@ -32,7 +43,7 @@ exports.deletePost = (req,res)=>{
 
     const id = req.params.id;
     db.query("delete from post where idPost = ? ",[id],(err,results,fileds)=>{
-
+        
         res.send(results);
 
     });
@@ -48,7 +59,6 @@ exports.showPostsByID = (req,res)=>{
         res.send(results);
 
     });
-
 
 };
 
