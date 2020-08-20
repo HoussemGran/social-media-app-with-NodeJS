@@ -25,14 +25,24 @@ exports.addPost = (req,res)=>{
 // show all post with users
 exports.showPosts = (req,res)=>{
 
-    const hunter = req.session;
-    if(hunter.username){
+    const user = req.session.username;
+    if(user){
 
-    db.query('select * from post p , user u where p.user = u.id',(err,results,fileds)=>{
-        if(results.legth > 0)
-        res.render('home',{results:results,msg:null});
-        else res.render('home',{results:null,msg:"No Posts Yet"});
+    db.query('select * from post p , user u where p.user = u.id order by datePost desc',(err,results,fileds)=>{
+            // render all users exept me
+        db.query("select * from user where id not like ? ",[req.session.userID],(error,result,field)=>{
+            
+            if(err) res.send(err.message);
 
+            else if(results)
+
+                res.render('home',{results:results,msg:null,users:result});
+        
+            else res.render('home',{results:null,msg:"No Posts Yet",users:result});
+
+
+        })
+        
     });
 
     }else res.redirect('login');
@@ -50,7 +60,7 @@ exports.deletePost = (req,res)=>{
 
 };
 
-// show post of a specefic user
+// show posts of a specefic user
 exports.showPostsByID = (req,res)=>{
 
     const id = req.params.id;
@@ -65,12 +75,40 @@ exports.showPostsByID = (req,res)=>{
 // increment a post up
 exports.incrementUP = (req,res)=>{
 
-    const id = req.params.id;
-    db.query("update post set up = up+1 where idPost=?",[id],(err,results,fileds)=>{
+    
+    const idPost = req.params.id;
+    const idUser = req.session.userID;
 
-        if(!err) res.redirect('/');
+    db.query("select * from ups where idUser = ? and idPost = ?",[idUser,idPost],(err,results,fileds)=>{
+       
+        if(err) res.send(err.message);
+
+        else if(results){
+            
+            res.redirect('/home');
+            
+       
+        }else{
+            db.query("update post set up = up+1 where idPost=?",[idPost],(err,results,fileds)=>{
+
+                if(!err){
+
+                    db.query("insert into ups set ?",{idUser:idUser,idPost:idPost},(err,results,fileds)=>{
+
+                       
+                        res.redirect('/home');
+                        
+                    });
+
+                }else res.send(err.message);
+        
+            });
+        }
+
 
     });
+
+   
 
 
 };

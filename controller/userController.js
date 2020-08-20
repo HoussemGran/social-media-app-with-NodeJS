@@ -39,7 +39,7 @@ exports.showUsers = (req,res)=>{
     if(user){
     db.query('select * from user',(err,results,fields)=>{
 
-        res.send(results);
+        res.render('home',{users:results});
 
     });
     }else res.redirect('login');
@@ -48,18 +48,20 @@ exports.showUsers = (req,res)=>{
 
 // show a specified user profile
 exports.showUser = (req,res)=>{
+
     const user = req.session.username;
+    
     if(user){
     const id = req.params.id;
     db.query("select * from user u , post p where p.user = u.id and u.id = ?",[id],(err,results,fields)=>{
-        console.log(results);
+    
         if(err) res.send(err.message);
         else if(results.length > 0)
          res.render("profile",{results:results , msg:null});
         else res.render("profile",{results : null , msg:"No posts Yet"});
 
     });
-    }else res.redirect('login');
+    }else res.redirect('/login');
 
 };
 
@@ -71,10 +73,13 @@ exports.myProfile = (req,res)=>{
     if(user){
 
     db.query("select * from user u , post p where p.user = u.id and u.username = ?",[user],(err,results,fields)=>{
-        console.log(results);
+        
         if(err) res.send(err.message);
+
         else if(results.length > 0)
-         res.render("profile",{results:results , msg:null});
+        
+             res.render("profile",{results:results , msg:null});
+        
         else res.render("profile",{results : null , msg:"No posts Yet"});
 
     });
@@ -88,6 +93,19 @@ exports.myProfile = (req,res)=>{
 exports.showMyFriends = (req,res)=>{
 
 
+
+
+};
+
+
+exports.logout = (req,res)=>{
+
+
+    if(req.session.username) req.session.destroy((err)=>{
+
+        if(err) res.send(err.message);
+        else res.redirect('login');
+    })
 
 
 };

@@ -10,6 +10,7 @@ router.post('/user',userController.addUser);
 router.get('/users',userController.showUsers);
 router.get('/profile/:id',userController.showUser);
 router.get('/myprofile',userController.myProfile);
+router.get('/logout',userController.logout);
 
 // posts controller
 router.post('/post',postController.addPost);

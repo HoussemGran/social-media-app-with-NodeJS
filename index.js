@@ -28,6 +28,12 @@ app.get('/',(req,res)=>{
 
 app.use('/',routes);
 
+app.get('/logout',(req,res)=>{
+
+  req.session.destroy;
+  res.redirect('login');
+
+});
 
 app.listen(3000,()=>{
     console.log('listen on port 3000');
