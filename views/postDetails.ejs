@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+  
+    <title>Post Details</title>
+</head>
+<body>
+    
+<%- include('navbar') %>
+
+    <div class="container">
+        <div class="row">
+          <div class="col-sm">
+              
+            
+           
+          </div>
+          <div class="col-sm">
+            
+
+
+<input type="hidden" value="<%= post[0].content %>" id="postV">
+            
+
+
+    <div class="card" style="width: 30rem;margin-top: 40px;">
+        
+        <form action="/post/details/update" method="POST">
+        
+        <div class="card-body">
+            <h4 class="card-title"> <%= post[0].username %> </h4>
+            <hr>
+          <input type="text" name="title" value="<%= post[0].title %>" class="form-control">
+          <input type="hidden" name="id" value="<%= post[0].idPost %>">
+          <textarea  name="content" class="form-control" id="post" cols="30" rows="10">
+          </textarea>
+        
+        <button class="btn btn-success"> Submit </button>
+       
+        </div>
+     </form>
+    
+    </div>
+
+
+          </div>
+          <div class="col-sm" style="text-align: center;">
+            
+          </div>
+        </div>
+      </div>
+ 
+      <script>    
+        var postValue = document.getElementById('postV').value;
+        var post = document.getElementById('post');
+        post.value = postValue;
+        </script>
+
+</body>
+</html>

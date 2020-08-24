@@ -11,12 +11,11 @@ exports.addUser = (req,res)=>{
 
     db.query("select * from user where username = ? and password = ?",[username,password],(err,results,fields)=>{
 
-        var hunter;
         if(results.length>0){
-            console.log(results[0].id);   
-            hunter = req.session;
-            hunter.username = username;
-            hunter.userID = results[0].id;
+               
+            
+            req.session.username = username;
+            req.session.userID = results[0].id;
             res.redirect("home");
 
         }else{
@@ -78,9 +77,9 @@ exports.myProfile = (req,res)=>{
 
         else if(results.length > 0)
         
-             res.render("profile",{results:results , msg:null});
+             res.render("myProfile",{results:results , msg:null});
         
-        else res.render("profile",{results : null , msg:"No posts Yet"});
+        else res.render("myProfile",{results : null , msg:"No posts Yet"});
 
     });
     }else res.redirect('login');

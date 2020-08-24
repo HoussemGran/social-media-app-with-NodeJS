@@ -6,9 +6,11 @@
     // add group
     exports.addGroup = (req,res)=>{
 
+        if(req.session.username){
+
         const now = new Date();
 
-        const group = {id:uuid.v1() , name:req.body.name , admin:req.body.admin , nbrsubs:0 , dateCreated:date.format(now, 'YYYY-MM-DD') };
+        const group = {id:uuid.v1() , name:req.body.groupName , admin:req.session.userID , nbrsubs:0 , dateCreated:date.format(now, 'YYYY-MM-DD') };
 
     db.query("insert into mygroup set ? ",group,(err,results,fields)=>{
 
@@ -20,14 +22,14 @@
     db.query("insert into usersGroups set ?",{idUser:group.admin , idGroup:group.id},(err,results,fields)=>{
 
         if(err) res.send(err.message);
-        else res.send(results);
+        else res.redirect('groups');
 
 
     }); 
 
         }
       });
-      
+    }else res.redirect('login');
       
  
 
@@ -62,6 +64,7 @@
     // delete a group
     exports.deleteGroup = (req,res)=>{
 
+        if(req.session.userID){
         const id = req.params.id;
 
         db.query("delete from mygroup where id = ?",[id],(err,results,fields)=>{
@@ -69,20 +72,22 @@
             res.redirect("home");
 
         });
+    }else res.redirect('login');
 
     };
 
     // update a group
     exports.updateGroup = (req,res)=>{
 
+        if(req.session.userID){
         const id = req.params.id;
         const name = req.body.name;
 
         db.query("update mygroup set name = ? where id = ?",[name,id],(err,results,fields)=>{
 
-            if(!err) res.redirect('home');
+            if(!err) res.send("post updated");
             else res.send(err.message);
 
         });
-
+    }else res.redirect('login');
     };

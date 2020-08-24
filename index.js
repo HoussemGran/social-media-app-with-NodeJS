@@ -22,6 +22,10 @@ app.get('/login',(req,res)=>{
   res.render('login');
 });
 
+app.get('/creategroup',(req,res)=>{
+  res.render('creategroup');
+});
+
 app.get('/',(req,res)=>{
   res.redirect('home');
 });

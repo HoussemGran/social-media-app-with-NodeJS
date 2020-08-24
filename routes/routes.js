@@ -5,6 +5,8 @@ const userController = require('../controller/userController');
 const postController = require('../controller/postController');
 const groupController = require('../controller/groupController');
 
+
+
 // user controller
 router.post('/user',userController.addUser);
 router.get('/users',userController.showUsers);
@@ -18,6 +20,7 @@ router.get('/home',postController.showPosts);
 router.post('/post/:id',postController.deletePost);
 router.get('/post/:id',postController.showPostsByID);
 router.get('/up/:id',postController.incrementUP);
+router.post('/post/details/update',postController.updatePost);
 
 // groups controller
 router.post('/group',groupController.addGroup);
