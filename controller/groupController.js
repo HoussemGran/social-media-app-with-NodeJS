@@ -41,10 +41,10 @@
         const user = req.session.username;
         if(user){
         db.query("select * from mygroup g , user u where g.admin = u.id",(err,results,fields)=>{
-            console.log(results);
+            
             res.render('groups',{results:results});
         });
-        }else res.redirect('login');
+        }else res.redirect('/login');
     };
 
     // show a specified group
@@ -57,7 +57,7 @@
 
             if(!err) res.send(results);
         });
-        }else res.redirect('login');
+        }else res.redirect('/login');
     };
 
 
@@ -69,10 +69,10 @@
 
         db.query("delete from mygroup where id = ?",[id],(err,results,fields)=>{
 
-            res.redirect("home");
+            res.redirect("/home");
 
         });
-    }else res.redirect('login');
+    }else res.redirect('/login');
 
     };
 

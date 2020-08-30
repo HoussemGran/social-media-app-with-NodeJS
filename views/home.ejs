@@ -4,9 +4,43 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    
     <title>Home</title>
 </head>
 <body>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <!--<script src="./ajax.js"></script>-->
+
+
+
+ <script>
+
+    $(document).ready(function(){
+  
+    $(".btnsubmit").on("click",function(e){
+      
+      e.preventDefault();
+      const postID = $('#postID').attr('value');
+      const idSelector = "#up"+postID;
+      let idVal = Number($(idSelector).text());
+      console.log(postID);
+      $(idSelector).text(idVal+1);
+
+      $.ajax({
+
+      type:'post',
+      url:'/up'
+     
+      });
+
+      
+    });
+    
+    
+    });
+        </script>
+  
+
     <%- include('navbar') %>
 
     <div class="container">
@@ -26,18 +60,23 @@
           <% }  else { %>
 
 <%  results.forEach(function(post){ %>
-    
+      
     <div class="card" style="width: 30rem;margin-top: 40px;">
         <div class="card-body">
-         <a href="profile/<%= post.user %>"><h5 class="card-title"> <%= post.username %> </h5></a> 
+         <a href="/profile/<%= post.user %>"><h5 class="card-title"> <%= post.username %> </h5></a> 
           <hr>
           <h6> <%= post.datePost %> </h6>
           <hr>
           <h5 class="card-title"><%= post.title %></h5>
           <p class="card-text"> <%= post.content %> </p>
-       
-       <a href="/up/<%= post.idPost %>"><button type="button" class="btn btn-outline-primary">UP</button></a> 
-       <span class="badge badge-light"> <%= post.up %> </span>
+          
+          <form action="/up" method="POST" >
+     
+            <input type="hidden" name="postID" value="<%= post.idPost %>" id="postID">
+            <button type="submit" id="<%= post.idPost %>" class="btn btnsubmit btn-outline-primary">UP</button>
+            <span class="badge badge-light" id="up<%= post.idPost %>"> <%= post.up %> </span>
+     
+      </form>
         </div>
       </div>
    <% }) %>
@@ -50,7 +89,7 @@
               
               <% users.forEach(function(entry){ %>
 
-                 <a href="profile/<%= entry.id %>"><li class="list-group-item"> <%= entry.username %> </li></a> 
+                 <a href="/profile/<%= entry.id %>"><li class="list-group-item"> <%= entry.username %> </li></a> 
 
               <% }) %>
 
@@ -58,7 +97,16 @@
           </div>
         </div>
       </div>
-    
+      <nav aria-label="Page navigation example" style="margin-left: 38%;margin-top: 30px;">
+        <ul class="pagination">
+          <% for(let i=1 ; i <= (nbr / 5)+1 ; i++ ){ %>
+
+          <li class="page-item"><a class="page-link" href="/home/page/<%= i %>"><%= i %></a></li>
+        
+          <% } %>  
+          
+        </ul>
+      </nav>
 
 </body>
 </html>

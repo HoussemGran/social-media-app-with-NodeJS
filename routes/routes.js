@@ -16,11 +16,12 @@ router.get('/logout',userController.logout);
 
 // posts controller
 router.post('/post',postController.addPost);
-router.get('/home',postController.showPosts);
-router.post('/post/:id',postController.deletePost);
+router.get('/home/page/:num',postController.showPosts);
+router.get('/post/delete/:id',postController.deletePost);
 router.get('/post/:id',postController.showPostsByID);
-router.get('/up/:id',postController.incrementUP);
+router.post('/up',postController.uptest);
 router.post('/post/details/update',postController.updatePost);
+router.get('/random',postController.randomPosts);
 
 // groups controller
 router.post('/group',groupController.addGroup);

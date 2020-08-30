@@ -2,6 +2,7 @@
 const uuid = require('uuid');
 const db = require('../db');
 const date = require('date-and-time');
+const faker = require('faker');
 
 
 exports.addPost = (req,res)=>{
@@ -25,13 +26,35 @@ exports.addPost = (req,res)=>{
     }else res.redirect('login');
 };
 
+// random post
+exports.randomPosts = (req,res)=>{
+
+    const now = new Date();
+    const datepost = date.format(now, 'YYYY/MM/DD HH:mm:ss');
+
+        
+        const post = {idPost:uuid.v4() , title:faker.lorem.sentence() , content:faker.lorem.paragraph() , user:req.session.userID,
+        datePost : datepost};
+        
+        db.query('insert into post set ?',post,(err,results,fileds)=>{
+
+            res.send('done');
+    
+        });
+    
+
+};
+
+
 // show all post with users
 exports.showPosts = (req,res)=>{
 
     const user = req.session.username;
+    const num = 5 * req.params.num;
+
     if(user){
 
-    db.query('select * from post p , user u where p.user = u.id order by datePost desc',(err,results,fileds)=>{
+    db.query('select * from post p , user u where p.user = u.id order by datePost desc limit ?',[num],(err,results,fileds)=>{
             // render all users exept me
         db.query("select * from user where id not like ? ",[req.session.userID],(error,result,field)=>{
             
@@ -39,7 +62,7 @@ exports.showPosts = (req,res)=>{
 
             else if(results)
 
-                res.render('home',{results:results,msg:null,users:result});
+                res.render('home',{results:results,msg:null,users:result,nbr:results.length});
         
             else res.render('home',{results:null,msg:"No Posts Yet",users:result});
 
@@ -48,7 +71,7 @@ exports.showPosts = (req,res)=>{
         
     });
 
-    }else res.redirect('login');
+    }else res.redirect('/login');
 };
 
 // remove a specified post
@@ -58,10 +81,10 @@ exports.deletePost = (req,res)=>{
     const id = req.params.id;
     db.query("delete from post where idPost = ? ",[id],(err,results,fileds)=>{
         
-        res.send("remove");
+        res.redirect("/myprofile");
 
     });
-    }else res.redirect('login');
+    }else res.redirect('/login');
 
 };
 
@@ -99,13 +122,28 @@ exports.updatePost = (req,res)=>{
 };
 
 
+exports.uptest = (req,res)=>{
+
+    const postID = req.body.postID;
+    
+    console.log("post id : "+postID);
+
+    db.query("update post set up = up+1 where idPost = ?",[postID],(err,results,fileds)=>{
+
+        //if(results.changedRows<1) res.json({msg:"failed"});
+        //else res.json({msg:"success"});
+
+    });
+
+
+};
 
 // increment a post up
 exports.incrementUP = (req,res)=>{
 
     if(req.session.userID){
     
-    const idPost = req.params.id;
+    const idPost = req.body.id;
     const idUser = req.session.userID;
 
     db.query("select * from ups where idUser = ? and idPost = ?",[idUser,idPost],(err,results,fileds)=>{
@@ -114,7 +152,7 @@ exports.incrementUP = (req,res)=>{
 
         else if(results){
             
-            res.redirect('/home');
+            
             
        
         }else{
@@ -125,11 +163,10 @@ exports.incrementUP = (req,res)=>{
                     db.query("insert into ups set ?",{idUser:idUser,idPost:idPost},(err,results,fileds)=>{
 
                        
-                        res.redirect('/home');
                         
                     });
 
-                }else res.send(err.message);
+                }
         
             });
         }

@@ -1,10 +1,13 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
+const faker = require('faker');
 require('./db');
+require('jquery');
 const routes = require('./routes/routes');
 const session = require('express-session');
 const app = express();
+
 
 app.set('views',path.join(__dirname,'views'));
 app.set('view engine','ejs');
@@ -27,7 +30,10 @@ app.get('/creategroup',(req,res)=>{
 });
 
 app.get('/',(req,res)=>{
-  res.redirect('home');
+  res.redirect('/home/page/1');
+});
+app.get('/home',(req,res)=>{
+  res.redirect('/home/page/1');
 });
 
 app.use('/',routes);

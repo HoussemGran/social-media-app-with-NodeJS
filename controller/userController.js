@@ -16,7 +16,7 @@ exports.addUser = (req,res)=>{
             
             req.session.username = username;
             req.session.userID = results[0].id;
-            res.redirect("home");
+            res.redirect("/home/page/1");
 
         }else{
 
@@ -24,7 +24,7 @@ exports.addUser = (req,res)=>{
 
             db.query('insert into user set ?',user,(err,results,fields)=>{
 
-               if(!err) res.redirect("home");
+               if(!err) res.redirect("/home/page/1");
                 else res.send(err.message);
         
             });
