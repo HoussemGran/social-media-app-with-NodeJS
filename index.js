@@ -3,7 +3,6 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const faker = require('faker');
 require('./db');
-require('jquery');
 const routes = require('./routes/routes');
 const session = require('express-session');
 const app = express();
@@ -25,13 +24,12 @@ app.get('/login',(req,res)=>{
   res.render('login');
 });
 
-app.get('/creategroup',(req,res)=>{
-  res.render('creategroup');
-});
+
 
 app.get('/',(req,res)=>{
   res.redirect('/home/page/1');
 });
+
 app.get('/home',(req,res)=>{
   res.redirect('/home/page/1');
 });

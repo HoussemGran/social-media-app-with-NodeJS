@@ -9,37 +9,6 @@
 </head>
 <body>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <!--<script src="./ajax.js"></script>-->
-
-
-
- <script>
-
-    $(document).ready(function(){
-  
-    $(".btnsubmit").on("click",function(e){
-      
-      e.preventDefault();
-      const postID = $('#postID').attr('value');
-      const idSelector = "#up"+postID;
-      let idVal = Number($(idSelector).text());
-      console.log(postID);
-      $(idSelector).text(idVal+1);
-
-      $.ajax({
-
-      type:'post',
-      url:'/up'
-     
-      });
-
-      
-    });
-    
-    
-    });
-        </script>
-  
 
     <%- include('navbar') %>
 
@@ -107,6 +76,34 @@
           
         </ul>
       </nav>
+
+      <script>
+
+        $(document).ready(function(){
+      
+        $(".btnsubmit").on("click",function(e){
+          
+          e.preventDefault();
+          const postID = $('#postID').attr('value');
+          const idSelector = "#up"+postID;
+          let idVal = Number($(idSelector).text());
+          console.log(postID);
+          $(idSelector).text(idVal+1);
+    
+          $.ajax({
+    
+          type:'post',
+          url:'/up'
+         
+          });
+    
+          
+        });
+        
+        
+        });
+  
+      </script>
 
 </body>
 </html>

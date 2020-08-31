@@ -3,7 +3,6 @@ const express = require('express');
 const router = express.Router();
 const userController = require('../controller/userController');
 const postController = require('../controller/postController');
-const groupController = require('../controller/groupController');
 
 
 
@@ -23,11 +22,5 @@ router.post('/up',postController.uptest);
 router.post('/post/details/update',postController.updatePost);
 router.get('/random',postController.randomPosts);
 
-// groups controller
-router.post('/group',groupController.addGroup);
-router.get('/groups',groupController.showGroups);
-router.get('/group/:id',groupController.showGroup);
-router.delete('/group/:id',groupController.deleteGroup);
-router.patch('/group/details/:id',groupController.updateGroup);
 
 module.exports = router;
